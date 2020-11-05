@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,7 +17,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nonmbre', 
+        'primer_apellido',
+        'segundo_apellido',
+        'numero_celular',
+        'correo', 
+        'contraseña',
     ];
 
     /**
@@ -25,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'contraseña', 'remember_token',
     ];
 
     /**
@@ -34,6 +40,26 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'correo_verified_at' => 'datetime',
     ];
+
+    public static function validationRules(){
+        return[
+            'nombre' =>'requeried| min:5 |max:50',
+            'primer_apellido'  =>'requeried| min:5 |max:50',
+            'segundo_apellido'  =>'requeried| min:5 |max:50',
+            'numero_celular'  =>'requeried| min:5 |max:50',
+            'correo'  =>'requeried| min:5 |max:50',
+            'contraseña' =>'requeried| interger | min:1 |max:32',
+        ];
+    }
+     
+    Use SoftDeletes;
+    protected $table = 'User';
+
+    public function User()
+    {
+        return $this->hasOne(User::class);
+    }
+
 }
